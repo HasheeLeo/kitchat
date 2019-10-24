@@ -11,17 +11,10 @@ import {type Conversation, type GCMessageObject} from '~/typedefs';
 class LocalStorage {
   // Load the images associated with the messages
   static loadMessagesImages(messages: Array<GCMessageObject>) {
-    const promises = messages.map(async message => {
-      if (message.attachmentPath && !message.documentName) {
-        let image = await RNFS.readFile(message.attachmentPath, 'base64');
-        const typeData = base64ToType(image);
-        if (typeData)
-          image = typeData.dataWithMime;
-        
-        message.image = image;
-      }
+    messages.forEach(message => {
+      if (message.attachmentPath && !message.documentName)
+        message.image = `file://${message.attachmentPath}`;
     });
-    return Promise.all(promises);
   }
 
   static async loadConversations() {
@@ -44,7 +37,7 @@ class LocalStorage {
         messages = JSON.parse(messages);
         if (messages[conversationId]) {
           messages = messages[conversationId];
-          await LocalStorage.loadMessagesImages(messages);
+          LocalStorage.loadMessagesImages(messages);
           return messages;
         }
       }
