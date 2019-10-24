@@ -16,6 +16,13 @@ type listenCallback = (
 ) => void;
 
 class MessageApi {
+  // Used to ensure only one global listener is active at a time
+  static globallyRegistered: boolean;
+
+  // Used to detect which conversation thread client is listening to
+  // actively
+  static conversationId: string|null;
+
   static GCMessageToMessage(receiverId: string, gcMessage: GCMessageObject,
     attachment?: Attachment)
   {
@@ -43,31 +50,45 @@ class MessageApi {
     };
   }
 
-  static listen(callback: listenCallback, senderId?: string) {
+  static listen(callback: listenCallback) {
+    if (MessageApi.globallyRegistered)
+      return;
+    
+    MessageApi.globallyRegistered = true;
     const session = SessionFactory.getSession();
     const unsubscribe = session.subscribe(Event.message, async data => {
       const message: MessageObject = JSON.parse(data);
-      if (senderId && message.senderId !== senderId)
-        return Promise.resolve();
+      // Prevent calling the global callback if a specific callback exists
+      // for given id
+      if (MessageApi.conversationId
+          && message.senderId === MessageApi.conversationId)
+        return;
       
-      const gcMessage = MessageApi.MessageToGCMessage(message);
-      if (message.isFile && message.fileName) {
-        const file = await MessageApi.requestAttachment(message.id);
-        if (file) {
-          const attachment = {
-            file: file,
-            fileName: message.fileName,
-            fileType: message.fileType
-          };
-          callback(gcMessage, attachment);
-        }
-      }
-      else {
-        callback(gcMessage);
-      }
+      MessageApi.subscribeCallback(callback, message);
     });
 
-    return unsubscribe;
+    return () => {
+      MessageApi.globallyRegistered = false;
+      unsubscribe();
+    };
+  }
+
+  static listenToId(callback: listenCallback, senderId: string) {
+    MessageApi.conversationId = senderId;
+    const session = SessionFactory.getSession();
+    const unsubscribe = session.subscribe(Event.message, async data => {
+      const message: MessageObject = JSON.parse(data);
+      if (MessageApi.conversationId
+          && MessageApi.conversationId !== message.senderId)
+        return;
+      
+      MessageApi.subscribeCallback(callback, message);
+    });
+
+    return () => {
+      MessageApi.conversationId = null;
+      unsubscribe();
+    };
   }
 
   static async requestAttachment(id: string) {
@@ -102,6 +123,26 @@ class MessageApi {
 
     if (attachment)
       MessageApi.sendAttachment(message.id, attachment);
+  }
+
+  static async subscribeCallback(callback: listenCallback,
+    message: MessageObject)
+  {
+    const gcMessage = MessageApi.MessageToGCMessage(message);
+    if (message.isFile && message.fileName) {
+      const file = await MessageApi.requestAttachment(message.id);
+      if (file) {
+        const attachment = {
+          file: file,
+          fileName: message.fileName,
+          fileType: message.fileType
+        };
+        callback(gcMessage, attachment);
+      }
+    }
+    else {
+      callback(gcMessage);
+    }
   }
 }
 

@@ -55,7 +55,11 @@ class Session {
     else
       this.subscribers[event].push({id: id, callback: callback});
     
-    return () => this.subscribers[event].filter(callback => callback.id !== id);
+    return () => {
+      this.subscribers[event] = (
+        this.subscribers[event].filter(callback => callback.id !== id)
+      );
+    }
   }
 }
 

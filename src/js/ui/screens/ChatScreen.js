@@ -67,7 +67,13 @@ class ChatScreen extends Component<Props, State> {
   async componentDidMount() {
     const messages = await LocalStorage.loadMessages(this.id);
     this.setState({isLoading: false, messages: messages});
-    MessageApi.listen(this.onReceiveMessage, this.id);
+
+    if (!this.stopListening)
+      this.stopListening = MessageApi.listenToId(this.onReceiveMessage, this.id);
+  }
+
+  componentWillUnmount() {
+    this.stopListening();
   }
 
   createGCMessage(text?: string) {
@@ -104,7 +110,7 @@ class ChatScreen extends Component<Props, State> {
   async onReceiveMessage(message: GCMessageObject, attachment?: Attachment) {
     if (attachment) {
       attachWithMessage(message, attachment);
-      LocalStorage.saveFile(message._id, attachment.file);
+      await LocalStorage.saveFile(message._id, attachment.file);
     }
     let withoutImageBlob = Object.assign({}, message);
     withoutImageBlob.image = undefined;

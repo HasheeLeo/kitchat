@@ -95,7 +95,7 @@ class MessagesScreen extends Component<Props, State> {
   async onReceiveMessage(message: GCMessageObject, attachment?: Attachment) {
     if (attachment) {
       attachWithMessage(message, attachment);
-      LocalStorage.saveFile(message._id, attachment.file);
+      await LocalStorage.saveFile(message._id, attachment.file);
     }
     let withoutImageBlob = Object.assign({}, message);
     withoutImageBlob.image = undefined;
