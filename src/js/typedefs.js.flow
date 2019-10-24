@@ -1,0 +1,46 @@
+// @flow
+
+import {FileType} from '~/constants';
+
+export type Attachment = {
+  file: string,
+  fileName: string,
+  fileType: TFileType
+};
+
+export type Conversation = {
+  id: string,
+  name: string
+};
+
+export type GCMessageObject = {
+  _id: string,
+  voice: boolean,
+  text?: string,
+  createdAt: string,
+  user: {
+    _id: string,
+    name?: string,
+    avatar?: string
+  },
+  image?: string,
+  video?: string,
+  voicePath?: string,
+  attachmentPath?: string,
+  documentName?: string,
+};
+
+export type MessageObject = {
+  id: string,
+  isVoice: boolean,
+  text: string,
+  isFile: boolean,
+  fileName: string,
+  fileType: string,
+  createdAt: string,
+  senderId: string,
+  receiverId: string,
+  groupId: string
+};
+
+export type TFileType = $Keys<typeof FileType>;

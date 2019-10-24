@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "343952149011",
+    "firebase_url": "https://kitchat-fa57e.firebaseio.com",
+    "project_id": "kitchat-fa57e",
+    "storage_bucket": "kitchat-fa57e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343952149011:android:8da6343178ef098fb88de6",
+        "android_client_info": {
+          "package_name": "com.kazam.kitchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343952149011-g7gp313acooo6mc7a3q2es1slm5nr2n3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIoPz__tkEL8AMLkYdiURcXLDzfF8UeUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343952149011-g7gp313acooo6mc7a3q2es1slm5nr2n3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
