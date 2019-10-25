@@ -24,6 +24,7 @@ import AppHeader from '~/ui/components/AppHeader';
 
 import LocalStorage from '~/app/LocalStorage';
 import MessageApi from '~/app/MessageApi';
+import NotificationApi from '~/app/NotificationApi';
 import SessionFactory from '~/app/SessionFactory';
 
 import onMessageCreated from '~/helpers/onMessageCreated';
@@ -78,6 +79,7 @@ class MessagesScreen extends Component<Props, State> {
     if (conversations)
       this.setState({conversations: conversations});
     
+    NotificationApi.init();
     MessageApi.listen(this.onReceiveMessage);
   }
 
