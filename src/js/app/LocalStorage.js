@@ -30,6 +30,19 @@ class LocalStorage {
     }
   }
 
+  static async loadDeviceToken() {
+    try {
+      const token = await AsyncStorage.getItem('deviceToken');
+      if (token)
+        return token;
+      else
+        return null;
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
   static async loadMessages(conversationId: string) {
     try {
       let messages = await AsyncStorage.getItem('messages');
@@ -66,6 +79,15 @@ class LocalStorage {
       await AsyncStorage.setItem('conversations',
         JSON.stringify(conversations)
       );
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  static async saveDeviceToken(token: string) {
+    try {
+      await AsyncStorage.setItem('deviceToken', token);
     }
     catch (e) {
       console.log(e);

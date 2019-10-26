@@ -24,6 +24,7 @@ import AppHeader from '~/ui/components/AppHeader';
 
 import LocalStorage from '~/app/LocalStorage';
 import MessageApi from '~/app/MessageApi';
+import NotificationApi from '~/app/NotificationApi';
 import SessionFactory from '~/app/SessionFactory';
 
 import onMessageCreated from '~/helpers/onMessageCreated';
@@ -79,6 +80,10 @@ class MessagesScreen extends Component<Props, State> {
       this.setState({conversations: conversations});
     
     MessageApi.listen(this.onReceiveMessage);
+    await NotificationApi.init();
+    const conversationId = await NotificationApi.wasOpenedByNotification();
+    if (conversationId)
+      this.navigateToChat(conversationId, conversationId);
   }
 
   componentWillUnmount() {
@@ -116,10 +121,10 @@ class MessagesScreen extends Component<Props, State> {
     this.navigateToChat(userId, userId);
   }
 
-  navigateToChat(userId: string, name: string)
+  navigateToChat(id: string, name: string)
   {
     this.props.navigation.navigate(Routes.chat, {
-      id: userId,
+      id: id,
       name: name
     });
   }
