@@ -20,12 +20,13 @@ import {
   View
 } from 'native-base';
 
-import attachWithMessage from '~/helpers/attachWithMessage';
 import AppHeader from '~/ui/components/AppHeader';
 
 import LocalStorage from '~/app/LocalStorage';
 import MessageApi from '~/app/MessageApi';
 import SessionFactory from '~/app/SessionFactory';
+
+import onMessageCreated from '~/helpers/onMessageCreated';
 
 import {
   NavigationScreenProp,
@@ -106,13 +107,7 @@ class MessagesScreen extends Component<Props, State> {
   }
 
   async onReceiveMessage(message: GCMessageObject, attachment?: Attachment) {
-    if (attachment) {
-      attachWithMessage(message, attachment);
-      await LocalStorage.saveFile(message._id, attachment.file);
-    }
-    let withoutImageBlob = Object.assign({}, message);
-    withoutImageBlob.image = undefined;
-    await LocalStorage.saveMessage(message.user._id, withoutImageBlob);
+    await onMessageCreated(message.user._id, message, attachment);
     this.createConversation(message.user._id);
   }
 

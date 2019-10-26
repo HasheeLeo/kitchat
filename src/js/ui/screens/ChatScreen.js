@@ -12,7 +12,7 @@ import AccountApi from '~/app/AccountApi';
 import LocalStorage from '~/app/LocalStorage';
 import MessageApi from '~/app/MessageApi';
 
-import attachWithMessage from '~/helpers/attachWithMessage';
+import onMessageCreated from '~/helpers/onMessageCreated';
 
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import {ImagePickerResponse} from 'react-native-image-picker';
@@ -108,13 +108,7 @@ class ChatScreen extends Component<Props, State> {
   }
 
   async onReceiveMessage(message: GCMessageObject, attachment?: Attachment) {
-    if (attachment) {
-      attachWithMessage(message, attachment);
-      await LocalStorage.saveFile(message._id, attachment.file);
-    }
-    let withoutImageBlob = Object.assign({}, message);
-    withoutImageBlob.image = undefined;
-    await LocalStorage.saveMessage(message.user._id, withoutImageBlob);
+    await onMessageCreated(message.user._id, message, attachment);
     this.setState(prevState => ({
       messages: GiftedChat.append(prevState.messages, message)
     }));
@@ -135,13 +129,7 @@ class ChatScreen extends Component<Props, State> {
   }
 
   async sendMessage(message: GCMessageObject, attachment?: Attachment) {
-    if (attachment) {
-      attachWithMessage(message, attachment);
-      LocalStorage.saveFile(message._id, attachment.file);
-    }
-    let withoutImageBlob = Object.assign({}, message);
-    withoutImageBlob.image = undefined;
-    await LocalStorage.saveMessage(this.id, withoutImageBlob);
+    await onMessageCreated(this.id, message, attachment);
     this.setState(prevState => ({
       messages: GiftedChat.append(prevState.messages, message)
     }));
