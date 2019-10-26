@@ -12,9 +12,10 @@ class NotificationApi {
 
   static async init() {
     try {
-      const permission = await firebase.messaging().hasPermission();
+      const messaging = firebase.messaging();
+      const permission = await messaging.hasPermission();
       if (!permission)
-        await firebase.messaging().requestPermission();
+        await messaging.requestPermission();
       
       NotificationApi.initialized = permission;
       NotificationApi.createMainChannel();
@@ -22,6 +23,8 @@ class NotificationApi {
       const newToken = await NotificationApi.hasTokenChanged();
       if (newToken)
         NotificationApi.updateToken(newToken);
+      
+      messaging.onTokenRefresh(NotificationApi.updateToken);
     }
     catch (e) {
       console.log(e);
@@ -55,10 +58,26 @@ class NotificationApi {
   }
 
   static updateToken(token: string) {
+    if (!NotificationApi.initialized)
+      return;
+    
     LocalStorage.saveDeviceToken(token);
     axios.put(`http://${SERVER_IP}/user/${AccountApi.getUserId()}`, {
       deviceToken: token
     });
+  }
+
+  static async wasOpenedByNotification() {
+    if (!NotificationApi.initialized)
+      return;
+    
+    const notifications = firebase.notifications();
+    const openingNotification = await notifications.getInitialNotification();
+    if (!openingNotification)
+      return;
+    
+    // TODO possible null reference
+    return openingNotification.notification.data.conversationId;
   }
 }
 

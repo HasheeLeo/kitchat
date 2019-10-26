@@ -79,8 +79,11 @@ class MessagesScreen extends Component<Props, State> {
     if (conversations)
       this.setState({conversations: conversations});
     
-    NotificationApi.init();
     MessageApi.listen(this.onReceiveMessage);
+    await NotificationApi.init();
+    const conversationId = await NotificationApi.wasOpenedByNotification();
+    if (conversationId)
+      this.navigateToChat(conversationId, conversationId);
   }
 
   componentWillUnmount() {
@@ -118,10 +121,10 @@ class MessagesScreen extends Component<Props, State> {
     this.navigateToChat(userId, userId);
   }
 
-  navigateToChat(userId: string, name: string)
+  navigateToChat(id: string, name: string)
   {
     this.props.navigation.navigate(Routes.chat, {
-      id: userId,
+      id: id,
       name: name
     });
   }
