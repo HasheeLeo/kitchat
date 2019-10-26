@@ -18,4 +18,6 @@ export const Routes = {
   signUp: 'SignUpRoute'
 };
 
-export const SERVER_IP = '39.40.161.160:12002';
+export const SERVER_IP = (
+  'ec2-13-58-168-26.us-east-2.compute.amazonaws.com:12002'
+);
