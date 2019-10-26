@@ -50,12 +50,13 @@ type State = {
 
 class MessagesScreen extends Component<Props, State> {
   conversationExists: (id: string) => void;
+  createConversation: (id: string) => void;
   onReceiveMessage: (
     gcMessage: GCMessageObject,
     attachment?: Attachment
   ) => void;
+  onNewConversation: (userId: string) => void;
   navigateToChat: (userId: string, name: string) => void;
-  newConversation: (userId: string) => void;
 
   constructor(props: Props) {
     super(props);
@@ -63,10 +64,11 @@ class MessagesScreen extends Component<Props, State> {
       conversations: []
     };
 
+    this.createConversation = this.createConversation.bind(this);
     this.conversationExists = this.conversationExists.bind(this);
     this.onReceiveMessage = this.onReceiveMessage.bind(this);
+    this.onNewConversation = this.onNewConversation.bind(this);
     this.navigateToChat = this.navigateToChat.bind(this);
-    this.newConversation = this.newConversation.bind(this);
   }
 
   async componentDidMount() {
@@ -92,6 +94,17 @@ class MessagesScreen extends Component<Props, State> {
     return found;
   }
 
+  createConversation(id: string) {
+    if (!this.conversationExists(id))
+      this.setState(prevState => ({
+        conversations: [...prevState.conversations, {
+          id: id,
+          name: id
+        }]}),
+        () => LocalStorage.saveConversations(this.state.conversations)
+      );
+  }
+
   async onReceiveMessage(message: GCMessageObject, attachment?: Attachment) {
     if (attachment) {
       attachWithMessage(message, attachment);
@@ -100,14 +113,12 @@ class MessagesScreen extends Component<Props, State> {
     let withoutImageBlob = Object.assign({}, message);
     withoutImageBlob.image = undefined;
     await LocalStorage.saveMessage(message.user._id, withoutImageBlob);
+    this.createConversation(message.user._id);
+  }
 
-    if (!this.conversationExists(message.user._id))
-      this.setState(prevState => ({
-        conversations: [...prevState.conversations, {
-          id: message.user._id,
-          name: message.user._id
-        }]
-      }));
+  onNewConversation(userId: string) {
+    this.createConversation(userId);
+    this.navigateToChat(userId, userId);
   }
 
   navigateToChat(userId: string, name: string)
@@ -116,19 +127,6 @@ class MessagesScreen extends Component<Props, State> {
       id: userId,
       name: name
     });
-  }
-
-  newConversation(userId: string) {
-    if (!this.conversationExists(userId))
-      this.setState(prevState => ({
-        conversations: [...prevState.conversations, {
-          id: userId,
-          name: userId
-        }]}),
-        () => LocalStorage.saveConversations(this.state.conversations)
-      );
-    
-    this.navigateToChat(userId, userId);
   }
 
   render() {
@@ -180,7 +178,7 @@ class MessagesScreen extends Component<Props, State> {
 
         <Footer>
           <Fab onPress={() => this.props.navigation.navigate(Routes.people, {
-            newConversation: this.newConversation
+            onNewConversation: this.onNewConversation
           })}>
             <Icon name='add' />
           </Fab>

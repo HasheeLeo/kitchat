@@ -66,7 +66,7 @@ class PeopleScreen extends Component<Props, State> {
             <ListItem
               onPress={() => {
                 this.props.navigation.goBack();
-                this.props.navigation.getParam('newConversation')(item);
+                this.props.navigation.getParam('onNewConversation')(item);
               }}
             >
               <Body>
