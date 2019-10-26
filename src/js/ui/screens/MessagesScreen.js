@@ -76,6 +76,7 @@ class MessagesScreen extends Component<Props, State> {
   async componentDidMount() {
     SessionFactory.createSession();
     const conversations = await LocalStorage.loadConversations();
+    console.log(conversations);
     if (conversations)
       this.setState({conversations: conversations});
     

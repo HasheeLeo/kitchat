@@ -38,7 +38,7 @@ class NotificationApi {
     const channel = new firebase.notifications.Android.Channel(
       'main-channel',
       'Main Channel',
-      firebase.notifications.Android.Importance.Max
+      firebase.notifications.Android.Importance.High
     ).setDescription('Main notification channel');
     firebase.notifications().android.createChannel(channel);
   }
