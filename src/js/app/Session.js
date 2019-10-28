@@ -9,28 +9,45 @@ type callback = (data: string) => Promise<any>;
 type event = $Keys<typeof Event>;
 
 class Session {
+  socketOpen: boolean;
   ws: WebSocket;
   subscribers: {[eventType: event]: Array<{id: string, callback: callback}>};
 
+  openConnection: () => void;
+  closeConnection: () => void;
+  isSocketOpen: () => boolean;
   onReceiveData: (data: mixed) => void;
   sendData: (data: string) => void;
   subscribe: (event: event, callback: callback) => (() => void);
 
   constructor() {
-    const userId = AccountApi.getUserId();
-    this.ws = new WebSocket(`ws://${SERVER_IP}/private-message?${userId}`);
-    this.ws.onopen = (e) => console.log('yay');
-    this.ws.onerror = (e) => console.log(e);
-    this.ws.onmessage = (e) => this.onReceiveData(e.data);
-    this.subscribers = {};
-
+    this.openConnection = this.openConnection.bind(this);
+    this.closeConnection = this.closeConnection.bind(this);
+    this.isSocketOpen = this.isSocketOpen.bind(this);
     this.onReceiveData = this.onReceiveData.bind(this);
     this.sendData = this.sendData.bind(this);
     this.subscribe = this.subscribe.bind(this);
+
+    this.subscribers = {};
+    this.openConnection();
   }
 
-  destroy() {
+  openConnection() {
+    const userId = AccountApi.getUserId();
+    this.ws = new WebSocket(`ws://${SERVER_IP}/private-message?${userId}`);
+    this.socketOpen = true;
+    this.ws.onopen = (e) => console.log('yay');
+    this.ws.onerror = (e) => console.log(e);
+    this.ws.onmessage = (e) => this.onReceiveData(e.data);
+  }
+
+  closeConnection() {
     this.ws.close();
+    this.socketOpen = false;
+  }
+
+  isSocketOpen() {
+    return this.socketOpen;
   }
 
   onReceiveData(data: mixed) {

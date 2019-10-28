@@ -69,7 +69,10 @@ class ChatScreen extends Component<Props, State> {
     this.setState({isLoading: false, messages: messages});
 
     if (!this.stopListening)
-      this.stopListening = MessageApi.listenToId(this.onReceiveMessage, this.id);
+      this.stopListening = MessageApi.listenToId(
+        this.onReceiveMessage,
+        this.id
+      );
   }
 
   componentWillUnmount() {

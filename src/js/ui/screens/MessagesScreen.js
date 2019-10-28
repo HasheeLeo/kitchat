@@ -26,6 +26,7 @@ import AppStateHandler from '~/app/AppStateHandler';
 import LocalStorage from '~/app/LocalStorage';
 import MessageApi from '~/app/MessageApi';
 import NotificationApi from '~/app/NotificationApi';
+import SessionFactory from '~/app/SessionFactory';
 
 import onMessageCreated from '~/helpers/onMessageCreated';
 
@@ -74,6 +75,7 @@ class MessagesScreen extends Component<Props, State> {
   }
 
   async componentDidMount() {
+    SessionFactory.createSession();
     AppStateHandler.init();
     const conversations = await LocalStorage.loadConversations();
     if (conversations)

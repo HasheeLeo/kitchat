@@ -21,9 +21,9 @@ class AppStateHandler {
 
   static handle(nextAppState: string) {
     if (nextAppState === 'active')
-      SessionFactory.createSession();
+      SessionFactory.resumeSession();
     else
-      SessionFactory.destroySession();
+      SessionFactory.pauseSession();
   }
 }
 
