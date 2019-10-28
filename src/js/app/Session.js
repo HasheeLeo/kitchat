@@ -9,6 +9,9 @@ type callback = (data: string) => Promise<any>;
 type event = $Keys<typeof Event>;
 
 class Session {
+  // Messages sent while the socket was still opening
+  pendingMessages: Array<string>;
+
   socketOpen: boolean;
   ws: WebSocket;
   subscribers: {[eventType: event]: Array<{id: string, callback: callback}>};
@@ -28,6 +31,7 @@ class Session {
     this.sendData = this.sendData.bind(this);
     this.subscribe = this.subscribe.bind(this);
 
+    this.pendingMessages = [];
     this.subscribers = {};
     this.openConnection();
   }
@@ -35,8 +39,11 @@ class Session {
   openConnection() {
     const userId = AccountApi.getUserId();
     this.ws = new WebSocket(`ws://${SERVER_IP}/private-message?${userId}`);
-    this.socketOpen = true;
-    this.ws.onopen = (e) => console.log('yay');
+    this.ws.onopen = (e) => {
+      this.socketOpen = true;
+      this.pendingMessages.forEach(message => this.sendData(message));
+      this.pendingMessages = [];
+    };
     this.ws.onerror = (e) => console.log(e);
     this.ws.onmessage = (e) => this.onReceiveData(e.data);
   }
@@ -61,6 +68,10 @@ class Session {
   }
 
   sendData(data: string) {
+    if (!this.socketOpen) {
+      this.pendingMessages.push(data);
+      return;
+    }
     this.ws.send(data);
   }
 
