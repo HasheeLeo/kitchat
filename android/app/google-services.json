@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "214756216473",
-    "firebase_url": "https://kitchat-5faec.firebaseio.com",
-    "project_id": "kitchat-5faec",
-    "storage_bucket": "kitchat-5faec.appspot.com"
+    "project_number": "374687412909",
+    "firebase_url": "https://kitchat-d7c70.firebaseio.com",
+    "project_id": "kitchat-d7c70",
+    "storage_bucket": "kitchat-d7c70.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:214756216473:android:d595c17ca397527707f208",
+        "mobilesdk_app_id": "1:374687412909:android:1926bba4087cdb52d78c24",
         "android_client_info": {
           "package_name": "com.kazam.kitchat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "214756216473-8m15qms7upsruptjuinbpl3mk64j1kct.apps.googleusercontent.com",
+          "client_id": "374687412909-pi6kur10r5lo3mhkgfhegtiku5qoiu1u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCNVxMRnqaVrkpInmHz99mQJasHzA6VuqE"
+          "current_key": "AIzaSyCqCXFo-DGQPaz-wt0KiWvKUH8qy7UzRng"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "214756216473-8m15qms7upsruptjuinbpl3mk64j1kct.apps.googleusercontent.com",
+              "client_id": "374687412909-pi6kur10r5lo3mhkgfhegtiku5qoiu1u.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
