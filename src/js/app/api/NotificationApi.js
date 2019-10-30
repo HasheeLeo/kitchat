@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import AccountApi from '~/app/api/AccountApi';
 import LocalStorage from '~/app/LocalStorage';
-import {SERVER_IP} from '~/constants';
+import {ACCOUNT_PORT, SERVER_IP} from '~/constants';
 
 class NotificationApi {
   static initialized: boolean;
@@ -62,9 +62,12 @@ class NotificationApi {
       return;
     
     LocalStorage.saveDeviceToken(token);
-    axios.put(`http://${SERVER_IP}/user/${AccountApi.getUserId()}`, {
-      deviceToken: token
-    });
+    axios.put(
+      `http://${SERVER_IP}:${ACCOUNT_PORT}/user/update-token/${AccountApi.getUserId()}`,
+      {
+        deviceToken: token
+      }
+    );
   }
 
   static async wasOpenedByNotification() {

@@ -3,7 +3,7 @@
 import uuid from 'uuid/v4';
 
 import AccountApi from '~/app/api/AccountApi';
-import {Event, SERVER_IP} from '~/constants';
+import {Event, MESSAGE_PORT, SERVER_IP} from '~/constants';
 
 type callback = (data: string) => Promise<any>;
 type event = $Keys<typeof Event>;
@@ -38,7 +38,9 @@ class Session {
 
   openConnection() {
     const userId = AccountApi.getUserId();
-    this.ws = new WebSocket(`ws://${SERVER_IP}/private-message?${userId}`);
+    this.ws = new WebSocket(
+      `ws://${SERVER_IP}:${MESSAGE_PORT}/message?${userId}`
+    );
     this.ws.onopen = (e) => {
       this.socketOpen = true;
       this.pendingMessages.forEach(message => this.sendData(message));

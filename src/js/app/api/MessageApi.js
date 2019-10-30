@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 import SessionFactory from '~/app/SessionFactory';
-import {Event, FileType, SERVER_IP} from '~/constants';
+import {Event, FileType, MESSAGE_PORT, SERVER_IP} from '~/constants';
 import {
   type Attachment,
   type GCMessageObject,
@@ -93,7 +93,9 @@ class MessageApi {
 
   static async requestAttachment(id: string) {
     try {
-      const response = await axios.get(`http://${SERVER_IP}/files/${id}`);
+      const response = await axios.get(
+        `http://${SERVER_IP}:${MESSAGE_PORT}/attachment/download/${id}`
+      );
       return response.data.chatMessageAttachedFile;
     }
     catch (e) {
@@ -103,7 +105,7 @@ class MessageApi {
 
   static sendAttachment(id: string, attachment: Attachment) {
     try {
-      axios.post(`http://${SERVER_IP}/files`, {
+      axios.post(`http://${SERVER_IP}:${MESSAGE_PORT}/attachment/upload`, {
         chatMessageAttachmentId: id,
         chatMessageAttachedFile: attachment.file
       });

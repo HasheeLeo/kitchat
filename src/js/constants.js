@@ -1,5 +1,7 @@
 // @flow
 
+export const ACCOUNT_PORT = 8762;
+
 export const Event = {
   message: 'message'
 };
@@ -10,6 +12,7 @@ export const FileType = {
 };
 
 export const MAX_ATTACHMENT_SIZE = 20971520; // 20 MBs
+export const MESSAGE_PORT = 8763;
 
 export const Routes = {
   chat: 'ChatRoute',

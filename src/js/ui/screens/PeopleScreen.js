@@ -14,7 +14,7 @@ import {
   NavigationState
 } from 'react-navigation';
 
-import {Routes, SERVER_IP} from '~/constants';
+import {ACCOUNT_PORT, Routes, SERVER_IP} from '~/constants';
 import {People} from '~/strings';
 
 type Props = {
@@ -36,7 +36,9 @@ class PeopleScreen extends Component<Props, State> {
   async componentDidMount() {
     // Writing without abstraction because this will change anyway
     try {
-      const response = await axios.get(`http://${SERVER_IP}/all-users`);
+      const response = await axios.get(
+        `http://${SERVER_IP}:${ACCOUNT_PORT}/user/all`
+      );
       const userId = AccountApi.getUserId();
       if (response.data) {
         const users = response.data.filter(user => user !== userId);
