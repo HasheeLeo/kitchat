@@ -7,7 +7,7 @@ import {Container, Body, H2, ListItem, Right, Text, View} from 'native-base';
 import axios from 'axios';
 import AppHeader from '~/ui/components/AppHeader';
 
-import AccountApi from '~/app/AccountApi';
+import AccountApi from '~/app/api/AccountApi';
 
 import {
   NavigationScreenProp,

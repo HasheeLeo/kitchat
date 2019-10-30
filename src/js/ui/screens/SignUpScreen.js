@@ -15,7 +15,7 @@ import {
   View
 } from 'native-base';
 
-import AccountApi from '~/app/AccountApi';
+import AccountApi from '~/app/api/AccountApi';
 import {Routes} from '~/constants';
 import {SignUp} from '~/strings';
 

@@ -8,9 +8,9 @@ import uuidv4 from 'uuid/v4';
 
 import Chat from '~/ui/components/Chat/Chat';
 
-import AccountApi from '~/app/AccountApi';
+import AccountApi from '~/app/api/AccountApi';
 import LocalStorage from '~/app/LocalStorage';
-import MessageApi from '~/app/MessageApi';
+import MessageApi from '~/app/api/MessageApi';
 
 import onMessageCreated from '~/helpers/onMessageCreated';
 

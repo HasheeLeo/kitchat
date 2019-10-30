@@ -24,8 +24,8 @@ import AppHeader from '~/ui/components/AppHeader';
 
 import AppStateHandler from '~/app/AppStateHandler';
 import LocalStorage from '~/app/LocalStorage';
-import MessageApi from '~/app/MessageApi';
-import NotificationApi from '~/app/NotificationApi';
+import MessageApi from '~/app/api/MessageApi';
+import NotificationApi from '~/app/api/NotificationApi';
 import SessionFactory from '~/app/SessionFactory';
 
 import onMessageCreated from '~/helpers/onMessageCreated';

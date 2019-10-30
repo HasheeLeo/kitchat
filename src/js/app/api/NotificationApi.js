@@ -3,7 +3,7 @@
 import firebase from 'react-native-firebase';
 import axios from 'axios';
 
-import AccountApi from '~/app/AccountApi';
+import AccountApi from '~/app/api/AccountApi';
 import LocalStorage from '~/app/LocalStorage';
 import {SERVER_IP} from '~/constants';
 

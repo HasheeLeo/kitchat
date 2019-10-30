@@ -2,7 +2,7 @@
 
 import uuid from 'uuid/v4';
 
-import AccountApi from '~/app/AccountApi';
+import AccountApi from '~/app/api/AccountApi';
 import {Event, SERVER_IP} from '~/constants';
 
 type callback = (data: string) => Promise<any>;
