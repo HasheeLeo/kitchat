@@ -1,7 +1,7 @@
 // @flow
 
 import React, {Component} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet, TouchableOpacity, TouchableHighlight} from 'react-native';
 import {
   Body,
   Button,
@@ -30,10 +30,14 @@ import SessionFactory from '~/app/SessionFactory';
 
 import onMessageCreated from '~/helpers/onMessageCreated';
 
+import COLORS from '../colors';
+
 import {
   NavigationScreenProp,
   NavigationState
 } from 'react-navigation';
+
+import {Image} from 'react-native'
 
 import {Routes} from '~/constants';
 import {Messages} from '~/strings';
@@ -42,6 +46,8 @@ import {
   type Conversation,
   type GCMessageObject
 } from '~/typedefs';
+
+var profilePicture = require ('../assets/profile.png');
 
 type Props = {
   navigation: NavigationScreenProp<NavigationState>
@@ -152,9 +158,13 @@ class MessagesScreen extends Component<Props, State> {
                 item.name
               )}
             >
-              <Body>
-                <Text>{item.name}</Text>
-              </Body>
+            
+            <Body style={styles.threadbody}>
+              <TouchableHighlight>
+                  <Image source={{ uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png' }} style={styles.image} />
+              </TouchableHighlight>
+              <Text style={styles.threadName}>{item.name.replace(/@[^@]+$/, "")}</Text>
+            </Body>
               <Right>
                 <Icon name='arrow-forward' />
               </Right>
@@ -178,11 +188,11 @@ class MessagesScreen extends Component<Props, State> {
 
         {content}
 
-        <Footer>
-          <Fab onPress={() => this.props.navigation.navigate(Routes.people, {
+        <Footer style={styles.footer}>
+          <Fab style={styles.fab} onPress={() => this.props.navigation.navigate(Routes.people, {
             onNewConversation: this.onNewConversation
           })}>
-            <Icon name='add' />
+            <Icon name='mail' />
           </Fab>
         </Footer>
       </Container>
@@ -199,7 +209,36 @@ const styles = StyleSheet.create({
 
   noMessagesText: {
     textAlign: 'center'
+  },
+  fab:{
+    backgroundColor: '#68bb59'
+  },
+  footer: {
+    backgroundColor: COLORS.brandColor
+  },
+
+  threadbody:{
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+  },
+
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 150 / 2,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "green",
+  },
+
+  threadName: {
+    paddingLeft: 10,
+    paddingTop: 10,
+    fontSize: 20,
   }
+
 });
 
 export default MessagesScreen;

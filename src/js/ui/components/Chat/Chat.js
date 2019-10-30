@@ -37,6 +37,8 @@ import {
 import {MAX_ATTACHMENT_SIZE} from '~/constants';
 import {Chat as ChatStrings} from '~/strings';
 
+import COLORS from '../../colors'
+
 type Props = {
   isLoading: boolean,
   messages: Array<any>,
@@ -170,11 +172,13 @@ class Chat extends Component<Props, State> {
             else
               return null;
           }}
+          
           renderSend={() => (
             <Button transparent onPress={this.onSend}>
-              <Icon name='arrow-forward' />
+              <Icon style={{color: COLORS.brandColor}} name='arrow-forward' />
             </Button>
           )}
+
           text={this.state.text}
           user={{_id: this.props.userId}}
           onInputTextChanged={text => this.setState({text: text})}
@@ -186,7 +190,7 @@ class Chat extends Component<Props, State> {
       <Container>
         <AppHeader
           navigation={this.props.navigation}
-          title={this.props.navigation.getParam('name')}
+          title={this.props.navigation.getParam('name').replace(/@[^@]+$/, "")}
         />
 
         {content}

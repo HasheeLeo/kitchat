@@ -3,11 +3,12 @@
 import React, {Component} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {Container, Body, H2, ListItem, Right, Text, View} from 'native-base';
-
 import axios from 'axios';
 import AppHeader from '~/ui/components/AppHeader';
 
 import AccountApi from '~/app/api/AccountApi';
+
+import COLORS from '../colors';
 
 import {
   NavigationScreenProp,
@@ -50,6 +51,8 @@ class PeopleScreen extends Component<Props, State> {
     }
   }
 
+  
+
   render() {
     let content;
     if (this.state.people.length == 0) {
@@ -72,7 +75,7 @@ class PeopleScreen extends Component<Props, State> {
               }}
             >
               <Body>
-                <Text>{item}</Text>
+                <Text>{item.replace(/@[^@]+$/, "")}</Text>
               </Body>
               <Right />
             </ListItem>
@@ -97,8 +100,11 @@ const styles = StyleSheet.create({
   },
 
   noPeopleText: {
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 20,
+    opacity: 0.5,
   }
 });
+
 
 export default PeopleScreen;

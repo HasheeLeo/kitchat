@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, TextInput} from 'react-native';
+import {Image, StyleSheet, TextInput} from 'react-native';
 import {
 	Button,
 	Container,
@@ -20,14 +20,16 @@ import {
 import AccountApi from '~/app/api/AccountApi';
 import {Routes} from '~/constants';
 import {SignUp} from '~/strings';
+import imageLogo from '../assets/logo1.png'
+import COLORS from '../colors';
 
 import {
 	NavigationScreenProp,
 	NavigationState
 } from 'react-navigation';
 
-const BLUE = "#428AF8";
-const LIGHT_GRAY = "#D3D3D3";
+const BLUE = COLORS.brandColor;
+const LIGHT_GRAY = COLORS.lightGray;
 
 type Props = {
 	navigation: NavigationScreenProp<NavigationState>
@@ -99,20 +101,6 @@ class SignUpScreen extends Component<Props, State> {
 			this.setState({isFormSubmitting: false});
 	}
 
-	handleFocus = event => {
-		this.setState({ isFocused: true });
-		if (this.props.onFocus) {
-			this.props.onFocus(event);
-		}
-	};
-
-	handleBlur = event => {
-		this.setState({ isFocused: false });
-		if (this.props.onBlur) {
-			this.props.onBlur(event);
-		}
-	};
-
 	render() {
 		if(this.state.isFormSubmitting && this.state.isSessionSaved)
 			return null;
@@ -123,6 +111,7 @@ class SignUpScreen extends Component<Props, State> {
 		return (
 			<Container>
 				<Content contentContainerStyle={styles.contentContainer}>
+					<Image source={imageLogo} style={styles.logo} />
 					<Form style={styles.form}>
 						
 						<TextInput
@@ -144,10 +133,11 @@ class SignUpScreen extends Component<Props, State> {
 							editable={!this.state.isFormSubmitting}
 							textContentType='emailAddress'
 							value={this.state.email}
-							onChangeText={text => this.setState({email: text})}
+							onChangeText={text => this.setState({email: text.trim()})}
 						/>
 						
 						<TextInput
+							autoCapitalize = 'none'
 							placeholder = "Password"
 							style={styles.inputTextStyle}
 							selectionColor={BLUE}
@@ -192,7 +182,7 @@ class SignUpScreen extends Component<Props, State> {
 								isSignUp: !prevState.isSignUp
 							}))}
 						>
-							<Text>
+							<Text style={{color: '#50A8E8'}}>
 								{this.state.isSignUp ? SignUp.signIn : SignUp.signUp}
 							</Text>
 						</Button>
@@ -206,21 +196,37 @@ class SignUpScreen extends Component<Props, State> {
 const styles = StyleSheet.create({
 	contentContainer: {
 		justifyContent: 'center',
-		flex: 1
+		flex: 1,
+
+	},
+
+	logo: {
+		flex: 1,
+		width: 200,
+		height: 200,
+		marginTop: 20,
+		marginBottom: 10,
+		resizeMode: "contain",
+		alignSelf: "center",
 	},
 
 	form: {
+		flex: 2,
+		marginTop: 0,
 		marginLeft: 20,
 		marginRight: 20
 	},
 
 	signUp: {
-		marginTop: 50
+		marginTop: 50,
+		color: "#161616",
+		backgroundColor: COLORS.brandColor,
 	},
 
 	inputTextStyle: {
 		height: 50,
 		paddingLeft: 6,
+		marginBottom: 10,
 		fontSize: 16
 	},
 });

@@ -7,6 +7,8 @@ import FileViewer from 'react-native-file-viewer';
 
 import {type GCMessageObject} from '~/typedefs';
 
+import COLORS from '../../colors'
+
 type Props = {
   currentMessage: GCMessageObject
 };
