@@ -103,6 +103,9 @@ class Chat extends Component<Props, State> {
       this.setState({text: ''});
     }
     catch (e) {
+      if (DocumentPicker.isCancel(e))
+        return;
+      
       console.log(e);
     }
   }
@@ -110,6 +113,9 @@ class Chat extends Component<Props, State> {
   onPhotos() {
     const options = {mediaType: 'photo', noData: true};
     ImagePicker.launchImageLibrary(options, response => {
+      if (response.didCancel)
+        return;
+      
       if (response.fileSize > MAX_ATTACHMENT_SIZE) {
         this.attachmentLimitAlert();
         return;
