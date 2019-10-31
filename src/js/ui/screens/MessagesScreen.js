@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
 
   footer: {
-    backgroundColor: COLORS.brandColor
+    backgroundColor: 'white'
   },
 
   image: {
