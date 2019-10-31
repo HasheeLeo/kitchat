@@ -3,14 +3,9 @@
 import React, {Component} from 'react';
 import {Alert} from 'react-native';
 import {
-  Body,
   Button,
   Container,
-  Content,
-  Header,
   Icon,
-  Left,
-  Right,
   Spinner
 } from 'native-base';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -24,7 +19,6 @@ import Actions from '~/ui/components/Chat/Actions';
 import AppHeader from '~/ui/components/AppHeader';
 import Attachment from '~/ui/components/Chat/Attachment';
 import Microphone from '~/ui/components/Chat/Microphone';
-import VoiceMessage from '~/ui/components/Chat/VoiceMessage';
 
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import {ImagePickerResponse} from 'react-native-image-picker';
@@ -34,6 +28,7 @@ import {
   NavigationState
 } from 'react-navigation';
 
+import COLORS from '~/ui/colors';
 import {MAX_ATTACHMENT_SIZE} from '~/constants';
 import {Chat as ChatStrings} from '~/strings';
 
@@ -170,11 +165,13 @@ class Chat extends Component<Props, State> {
             else
               return null;
           }}
+          
           renderSend={() => (
             <Button transparent onPress={this.onSend}>
-              <Icon name='arrow-forward' />
+              <Icon name='arrow-forward' style={{color: COLORS.brandColor}} />
             </Button>
           )}
+
           text={this.state.text}
           user={{_id: this.props.userId}}
           onInputTextChanged={text => this.setState({text: text})}
@@ -186,7 +183,7 @@ class Chat extends Component<Props, State> {
       <Container>
         <AppHeader
           navigation={this.props.navigation}
-          title={this.props.navigation.getParam('name')}
+          title={this.props.navigation.getParam('name').replace(/@[^@]+$/, "")}
         />
 
         {content}

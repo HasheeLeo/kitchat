@@ -14,7 +14,7 @@ import {
   NavigationState
 } from 'react-navigation';
 
-import {ACCOUNT_PORT, Routes, SERVER_IP} from '~/constants';
+import {ACCOUNT_PORT, SERVER_IP} from '~/constants';
 import {People} from '~/strings';
 
 type Props = {
@@ -72,7 +72,7 @@ class PeopleScreen extends Component<Props, State> {
               }}
             >
               <Body>
-                <Text>{item}</Text>
+                <Text>{item.replace(/@[^@]+$/, "")}</Text>
               </Body>
               <Right />
             </ListItem>
@@ -97,8 +97,11 @@ const styles = StyleSheet.create({
   },
 
   noPeopleText: {
+    fontSize: 20,
+    opacity: 0.5,
     textAlign: 'center'
   }
 });
+
 
 export default PeopleScreen;

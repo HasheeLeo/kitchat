@@ -1,28 +1,26 @@
 // @flow
 
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {Image, StyleSheet, TextInput} from 'react-native';
 import {
   Button,
   Container,
   Content,
   Form,
-  Item,
-  Input,
-  Label,
   Spinner,
-  Text,
-  View
+  Text
 } from 'native-base';
 
 import AccountApi from '~/app/api/AccountApi';
 import {Routes} from '~/constants';
 import {SignUp} from '~/strings';
+import imageLogo from '../assets/logo1.png';
+import COLORS from '../colors';
 
-import {
-  NavigationScreenProp,
-  NavigationState
-} from 'react-navigation';
+import {NavigationScreenProp, NavigationState} from 'react-navigation';
+
+const BLUE = COLORS.brandColor;
+const LIGHT_GRAY = COLORS.lightGray;
 
 type Props = {
   navigation: NavigationScreenProp<NavigationState>
@@ -31,6 +29,8 @@ type Props = {
 type State = {
   email: string,
   isFormSubmitting: boolean,
+  isFocusedEmail: boolean,
+  isFocusedPassword: boolean,
   isSessionSaved: boolean,
   isSignUp: boolean,
   password: string
@@ -44,6 +44,8 @@ class SignUpScreen extends Component<Props, State> {
     super(props);
     this.state = {
       email: '',
+      isFocusedEmail: false,
+      isFocusedPassword: false,
       isFormSubmitting: false,
       isSessionSaved: true,
       isSignUp: true,
@@ -93,57 +95,69 @@ class SignUpScreen extends Component<Props, State> {
   }
 
   render() {
-    if(this.state.isFormSubmitting && this.state.isSessionSaved)
+    if (this.state.isFormSubmitting && this.state.isSessionSaved)
       return null;
-    
+
     return (
       <Container>
         <Content contentContainerStyle={styles.contentContainer}>
-          <Form>
-            <Item stackedLabel>
-              <Label>{SignUp.emailLabel}</Label>
-              <Input
-                autoCapitalize='none'
-                editable={!this.state.isFormSubmitting}
-                textContentType='emailAddress'
-                value={this.state.email}
-                onChangeText={text => this.setState({email: text})}
-              />
-            </Item>
+          <Image source={imageLogo} style={styles.logo} />
+          <Form style={styles.form}>
+            <TextInput
+              autoCapitalize='none'
+              editable={!this.state.isFormSubmitting}
+              placeholder='Email'
+              selectionColor={BLUE}
+              style={styles.inputTextStyle}
+              textContentType='emailAddress'
+              underlineColorAndroid={
+                this.state.isFocusedEmail ? BLUE : LIGHT_GRAY
+              }
+              value={this.state.email}
+              onBlur={() => this.setState({isFocusedEmail: false})}
+              onChangeText={text => this.setState({email: text.trim()})}
+              onFocus={() => this.setState({isFocusedEmail: true})}
+            />
 
-            <Item stackedLabel last>
-              <Label>{SignUp.passwordLabel}</Label>
-              <Input
-                editable={!this.state.isFormSubmitting}
-                secureTextEntry
-                value={this.state.password}
-                onChangeText={text => this.setState({password: text})}
-              />
-            </Item>
+            <TextInput
+              autoCapitalize='none'
+              editable={!this.state.isFormSubmitting}
+              placeholder='Password'
+              secureTextEntry
+              selectionColor={BLUE}
+              style={styles.inputTextStyle}
+              underlineColorAndroid={
+                this.state.isFocusedPassword ? BLUE : LIGHT_GRAY
+              }
+              value={this.state.password}
+              onBlur={() => this.setState({isFocusedPassword: false})}
+              onChangeText={text => this.setState({password: text})}
+              onFocus={() => this.setState({isFocusedPassword: true})}
+            />
 
             <Button
               block
               disabled={this.state.isFormSubmitting}
               primary={!this.state.isFormSubmitting}
               style={styles.signUp}
-              onPress={this.state.isSignUp ? this.signUp : this.signIn}
-            >
+              onPress={this.state.isSignUp ? this.signUp : this.signIn}>
               {this.state.isFormSubmitting && <Spinner color='blue' />}
-              {!this.state.isFormSubmitting &&
+              {!this.state.isFormSubmitting && (
                 <Text>
                   {this.state.isSignUp ? SignUp.signUp : SignUp.signIn}
                 </Text>
-              }
+              )}
             </Button>
 
             <Button
               transparent
               style={{alignSelf: 'center', marginTop: 10}}
-              onPress={() => this.setState(prevState => ({
-                isSignUp: !prevState.isSignUp
-              }))}
-            >
-              <Text>
+              onPress={() =>
+                this.setState(prevState => ({
+                  isSignUp: !prevState.isSignUp,
+                }))
+              }>
+              <Text style={{color: '#50A8E8'}}>
                 {this.state.isSignUp ? SignUp.signIn : SignUp.signUp}
               </Text>
             </Button>
@@ -156,13 +170,39 @@ class SignUpScreen extends Component<Props, State> {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    justifyContent: 'center',
-    flex: 1
+    flex: 1,
+    justifyContent: 'center'
+  },
+
+  form: {
+    flex: 2,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 0
+  },
+
+  inputTextStyle: {
+    fontSize: 16,
+    height: 50,
+    marginBottom: 10,
+    paddingLeft: 6
+  },
+
+  logo: {
+    alignSelf: 'center',
+    flex: 1,
+    height: 200,
+    marginBottom: 10,
+    marginTop: 20,
+    resizeMode: 'contain',
+    width: 200
   },
 
   signUp: {
-    marginTop: 40
-  }
+    color: '#161616',
+    backgroundColor: COLORS.brandColor,
+    marginTop: 50
+  },
 });
 
 export default SignUpScreen;

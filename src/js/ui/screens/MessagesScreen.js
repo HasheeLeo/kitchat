@@ -1,22 +1,18 @@
 // @flow
 
 import React, {Component} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, Image, StyleSheet, TouchableHighlight} from 'react-native';
 import {
   Body,
   Button,
   Container,
-  Content,
   Fab,
   Footer,
-  Header,
   H2,
   Icon,
-  Left,
   ListItem,
   Right,
   Text,
-  Title,
   View
 } from 'native-base';
 
@@ -35,6 +31,7 @@ import {
   NavigationState
 } from 'react-navigation';
 
+import COLORS from '~/ui/colors';
 import {Routes} from '~/constants';
 import {Messages} from '~/strings';
 import {
@@ -152,9 +149,18 @@ class MessagesScreen extends Component<Props, State> {
                 item.name
               )}
             >
-              <Body>
-                <Text>{item.name}</Text>
-              </Body>
+            
+            <Body style={styles.threadBody}>
+              <TouchableHighlight>
+                <Image
+                  source={
+                    {uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'}
+                  } 
+                  style={styles.image}
+                />
+              </TouchableHighlight>
+              <Text style={styles.threadName}>{item.name.replace(/@[^@]+$/, "")}</Text>
+            </Body>
               <Right>
                 <Icon name='arrow-forward' />
               </Right>
@@ -178,11 +184,11 @@ class MessagesScreen extends Component<Props, State> {
 
         {content}
 
-        <Footer>
-          <Fab onPress={() => this.props.navigation.navigate(Routes.people, {
+        <Footer style={styles.footer}>
+          <Fab style={styles.fab} onPress={() => this.props.navigation.navigate(Routes.people, {
             onNewConversation: this.onNewConversation
           })}>
-            <Icon name='add' />
+            <Icon name='mail' />
           </Fab>
         </Footer>
       </Container>
@@ -191,6 +197,23 @@ class MessagesScreen extends Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
+  fab: {
+    backgroundColor: '#68bb59'
+  },
+
+  footer: {
+    backgroundColor: COLORS.brandColor
+  },
+
+  image: {
+    borderColor: 'green',
+    borderRadius: 150 / 2,
+    borderWidth: 1,
+    height: 50,
+    overflow: 'hidden',
+    width: 50
+  },
+
   noMessagesContainer: {
     alignItems: 'center',
     flex: 1,
@@ -198,7 +221,22 @@ const styles = StyleSheet.create({
   },
 
   noMessagesText: {
+    fontSize: 20,
+    opacity: 0.5,
     textAlign: 'center'
+  },
+
+  threadBody: {
+    alignItems: 'flex-start',
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+
+  threadName: {
+    fontSize: 20,
+    paddingLeft: 10,
+    paddingTop: 10,
   }
 });
 

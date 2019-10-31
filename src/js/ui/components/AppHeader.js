@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {Body, Button, Header, Icon, Left, Right, Title} from 'native-base';
+import COLORS from '~/ui/colors';
 
 import {
   NavigationScreenProp,
@@ -15,7 +16,7 @@ type Props = {
 };
 
 export default (props: Props) => (
-  <Header>
+  <Header style={{backgroundColor: COLORS.brandColor}}>
     <Left>
       {props.renderLeft && props.renderLeft()}
       {!props.renderLeft && (
