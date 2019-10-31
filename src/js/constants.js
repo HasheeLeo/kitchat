@@ -22,5 +22,5 @@ export const Routes = {
 };
 
 export const SERVER_IP = (
-  'ec2-13-58-168-26.us-east-2.compute.amazonaws.com:12002'
+  'ec2-13-58-168-26.us-east-2.compute.amazonaws.com'
 );
