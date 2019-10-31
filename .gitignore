@@ -58,6 +58,10 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
+# Metro cache
+metro-cache/
+haste-map-metro-4-6aacba021d231ba907ebe0380fc18b97-808528e4cb689f3579285da6a2b3e78a
+
 # vscode
 .vscode/
 *.code-workspace
