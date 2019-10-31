@@ -8,7 +8,7 @@ import {
   Icon,
   Spinner
 } from 'native-base';
-import {GiftedChat} from 'react-native-gifted-chat';
+import {Bubble, GiftedChat} from 'react-native-gifted-chat';
 import AudioRecord from 'react-native-audio-record';
 import DocumentPicker from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-picker';
@@ -157,6 +157,19 @@ class Chat extends Component<Props, State> {
           messages={this.props.messages}
           renderActions={() => (
             <Actions onDocument={this.onDocument} onPhotos={this.onPhotos} />
+          )}
+          renderBubble={props => (
+            <Bubble
+              {...props}
+              wrapperStyle={{
+                left: {
+                },
+
+                right: {
+                  backgroundColor: COLORS.brandColor
+                }
+              }}
+            />
           )}
           renderChatFooter={() => <Microphone onPress={this.toggleRecording} />}
           renderCustomView={({currentMessage}) => {
