@@ -3,7 +3,7 @@
 import React from 'react';
 import {Button, Icon} from 'native-base';
 
-import COLORS from '../../colors'
+import COLORS from '~/ui/colors';
 
 type Props = {
   onDocument: () => void,
@@ -13,10 +13,10 @@ type Props = {
 export default (props: Props) => (
   <>
     <Button transparent onPress={props.onDocument}>
-      <Icon style={{color: COLORS.brandColor}} name='attach' />
+      <Icon name='attach' style={{color: COLORS.brandColor}} />
     </Button>
     <Button transparent onPress={props.onPhotos}>
-      <Icon style={{color: COLORS.brandColor}} name='photos' />
+      <Icon name='photos' style={{color: COLORS.brandColor}} />
     </Button>
   </>
 );

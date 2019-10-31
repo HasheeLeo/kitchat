@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import {Button, Icon, Text, View} from 'native-base';
-import COLORS from '../../colors'
+import COLORS from '~/ui/colors';
 
 type Props = {
   onPress: () => void
@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
   },
 
   mic: {
-    fontSize: 40,
-    color: COLORS.brandColor
+    color: COLORS.brandColor,
+    fontSize: 40
   }
 });
 

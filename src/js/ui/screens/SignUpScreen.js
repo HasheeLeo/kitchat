@@ -7,13 +7,8 @@ import {
   Container,
   Content,
   Form,
-  Item,
-  Input,
-  Icon,
-  Label,
   Spinner,
-  Text,
-  View
+  Text
 } from 'native-base';
 
 import AccountApi from '~/app/api/AccountApi';
@@ -67,7 +62,7 @@ class SignUpScreen extends Component<Props, State> {
       const {email, password} = credentials;
       this.setState({
         email: email,
-        password: password,
+        password: password
       });
       await this.signIn();
     }
@@ -79,7 +74,7 @@ class SignUpScreen extends Component<Props, State> {
   async signIn() {
     const success = await AccountApi.signIn(
       this.state.email,
-      this.state.password,
+      this.state.password
     );
     if (success)
       this.props.navigation.navigate(Routes.messages);
@@ -91,7 +86,7 @@ class SignUpScreen extends Component<Props, State> {
     this.setState({isFormSubmitting: true});
     const success = await AccountApi.signUp(
       this.state.email,
-      this.state.password,
+      this.state.password
     );
     if (success)
       await this.signIn();

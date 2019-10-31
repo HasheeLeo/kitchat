@@ -3,19 +3,18 @@
 import React, {Component} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {Container, Body, H2, ListItem, Right, Text, View} from 'native-base';
+
 import axios from 'axios';
 import AppHeader from '~/ui/components/AppHeader';
 
 import AccountApi from '~/app/api/AccountApi';
-
-import COLORS from '../colors';
 
 import {
   NavigationScreenProp,
   NavigationState
 } from 'react-navigation';
 
-import {ACCOUNT_PORT, Routes, SERVER_IP} from '~/constants';
+import {ACCOUNT_PORT, SERVER_IP} from '~/constants';
 import {People} from '~/strings';
 
 type Props = {
@@ -50,8 +49,6 @@ class PeopleScreen extends Component<Props, State> {
       console.log(e);
     }
   }
-
-  
 
   render() {
     let content;
@@ -100,9 +97,9 @@ const styles = StyleSheet.create({
   },
 
   noPeopleText: {
-    textAlign: 'center',
     fontSize: 20,
     opacity: 0.5,
+    textAlign: 'center'
   }
 });
 

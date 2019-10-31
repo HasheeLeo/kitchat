@@ -3,14 +3,9 @@
 import React, {Component} from 'react';
 import {Alert} from 'react-native';
 import {
-  Body,
   Button,
   Container,
-  Content,
-  Header,
   Icon,
-  Left,
-  Right,
   Spinner
 } from 'native-base';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -24,7 +19,6 @@ import Actions from '~/ui/components/Chat/Actions';
 import AppHeader from '~/ui/components/AppHeader';
 import Attachment from '~/ui/components/Chat/Attachment';
 import Microphone from '~/ui/components/Chat/Microphone';
-import VoiceMessage from '~/ui/components/Chat/VoiceMessage';
 
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import {ImagePickerResponse} from 'react-native-image-picker';
@@ -34,10 +28,9 @@ import {
   NavigationState
 } from 'react-navigation';
 
+import COLORS from '~/ui/colors';
 import {MAX_ATTACHMENT_SIZE} from '~/constants';
 import {Chat as ChatStrings} from '~/strings';
-
-import COLORS from '../../colors'
 
 type Props = {
   isLoading: boolean,
@@ -175,7 +168,7 @@ class Chat extends Component<Props, State> {
           
           renderSend={() => (
             <Button transparent onPress={this.onSend}>
-              <Icon style={{color: COLORS.brandColor}} name='arrow-forward' />
+              <Icon name='arrow-forward' style={{color: COLORS.brandColor}} />
             </Button>
           )}
 

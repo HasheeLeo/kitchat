@@ -1,22 +1,18 @@
 // @flow
 
 import React, {Component} from 'react';
-import {FlatList, StyleSheet, TouchableOpacity, TouchableHighlight} from 'react-native';
+import {FlatList, Image, StyleSheet, TouchableHighlight} from 'react-native';
 import {
   Body,
   Button,
   Container,
-  Content,
   Fab,
   Footer,
-  Header,
   H2,
   Icon,
-  Left,
   ListItem,
   Right,
   Text,
-  Title,
   View
 } from 'native-base';
 
@@ -30,15 +26,12 @@ import SessionFactory from '~/app/SessionFactory';
 
 import onMessageCreated from '~/helpers/onMessageCreated';
 
-import COLORS from '../colors';
-
 import {
   NavigationScreenProp,
   NavigationState
 } from 'react-navigation';
 
-import {Image} from 'react-native'
-
+import COLORS from '~/ui/colors';
 import {Routes} from '~/constants';
 import {Messages} from '~/strings';
 import {
@@ -46,8 +39,6 @@ import {
   type Conversation,
   type GCMessageObject
 } from '~/typedefs';
-
-var profilePicture = require ('../assets/profile.png');
 
 type Props = {
   navigation: NavigationScreenProp<NavigationState>
@@ -159,9 +150,14 @@ class MessagesScreen extends Component<Props, State> {
               )}
             >
             
-            <Body style={styles.threadbody}>
+            <Body style={styles.threadBody}>
               <TouchableHighlight>
-                  <Image source={{ uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png' }} style={styles.image} />
+                <Image
+                  source={
+                    {uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'}
+                  } 
+                  style={styles.image}
+                />
               </TouchableHighlight>
               <Text style={styles.threadName}>{item.name.replace(/@[^@]+$/, "")}</Text>
             </Body>
@@ -201,6 +197,23 @@ class MessagesScreen extends Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
+  fab: {
+    backgroundColor: '#68bb59'
+  },
+
+  footer: {
+    backgroundColor: COLORS.brandColor
+  },
+
+  image: {
+    borderColor: 'green',
+    borderRadius: 150 / 2,
+    borderWidth: 1,
+    height: 50,
+    overflow: 'hidden',
+    width: 50
+  },
+
   noMessagesContainer: {
     alignItems: 'center',
     flex: 1,
@@ -208,37 +221,23 @@ const styles = StyleSheet.create({
   },
 
   noMessagesText: {
+    fontSize: 20,
+    opacity: 0.5,
     textAlign: 'center'
   },
-  fab:{
-    backgroundColor: '#68bb59'
-  },
-  footer: {
-    backgroundColor: COLORS.brandColor
-  },
 
-  threadbody:{
+  threadBody: {
+    alignItems: 'flex-start',
     flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
-  },
-
-  image: {
-    width: 50,
-    height: 50,
-    borderRadius: 150 / 2,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "green",
+    flexWrap: 'wrap'
   },
 
   threadName: {
+    fontSize: 20,
     paddingLeft: 10,
     paddingTop: 10,
-    fontSize: 20,
   }
-
 });
 
 export default MessagesScreen;
