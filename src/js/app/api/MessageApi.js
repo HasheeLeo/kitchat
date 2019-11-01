@@ -46,8 +46,23 @@ class MessageApi {
       voice: message.isVoice,
       text: message.text ? message.text : '',
       createdAt: message.createdAt,
-      user: {_id: message.senderId}
+      user: {_id: message.senderId},
+      receiverId: message.receiverId
     };
+  }
+
+  static async sync(userId: string, callback: listenCallback) {
+    try {
+      const response = await axios.get(
+        `http://${SERVER_IP}:${MESSAGE_PORT}/sync/messages/${userId}`
+      );
+      const messages = response.data;
+      for (const message of messages)
+        await MessageApi.subscribeCallback(callback, message);
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
   static listen(callback: listenCallback) {

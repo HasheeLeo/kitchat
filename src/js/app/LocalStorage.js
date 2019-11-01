@@ -9,6 +9,8 @@ import base64ToType from '~/helpers/base64ToType';
 import {type Conversation, type GCMessageObject} from '~/typedefs';
 
 class LocalStorage {
+  static isSavingMessage: boolean;
+
   // Load the images associated with the messages
   static loadMessagesImages(messages: Array<GCMessageObject>) {
     messages.forEach(message => {
@@ -114,6 +116,12 @@ class LocalStorage {
     message: GCMessageObject)
   {
     try {
+      if (LocalStorage.isSavingMessage) {
+        setTimeout(() => LocalStorage.saveMessage(conversationId, message), 10);
+        return;
+      }
+
+      LocalStorage.isSavingMessage = true;
       let savedMessages = await AsyncStorage.getItem('messages');
       if (savedMessages)
         savedMessages = JSON.parse(savedMessages);
@@ -125,6 +133,7 @@ class LocalStorage {
         message
       );
       await AsyncStorage.setItem('messages', JSON.stringify(savedMessages));
+      LocalStorage.isSavingMessage = false;
     }
     catch (e) {
       console.log(e);

@@ -18,6 +18,7 @@ import {
 
 import AppHeader from '~/ui/components/AppHeader';
 
+import AccountApi from '~/app/api/AccountApi';
 import AppStateHandler from '~/app/AppStateHandler';
 import LocalStorage from '~/app/LocalStorage';
 import MessageApi from '~/app/api/MessageApi';
@@ -75,8 +76,13 @@ class MessagesScreen extends Component<Props, State> {
     SessionFactory.createSession();
     AppStateHandler.init();
     const conversations = await LocalStorage.loadConversations();
-    if (conversations)
+    if (conversations) {
       this.setState({conversations: conversations});
+    }
+    else {
+      const userId = AccountApi.getUserId();
+      await MessageApi.sync(userId, this.onReceiveMessage);
+    }
     
     MessageApi.listen(this.onReceiveMessage);
     await NotificationApi.init();
@@ -111,8 +117,14 @@ class MessagesScreen extends Component<Props, State> {
   }
 
   async onReceiveMessage(message: GCMessageObject, attachment?: Attachment) {
-    await onMessageCreated(message.user._id, message, attachment);
-    this.createConversation(message.user._id);
+    let conversationId;
+    if (message.receiverId === AccountApi.getUserId())
+      conversationId = message.user._id;
+    else
+      conversationId = message.receiverId;
+    
+    await onMessageCreated(conversationId, message, attachment);
+    this.createConversation(conversationId);
   }
 
   onNewConversation(userId: string) {
