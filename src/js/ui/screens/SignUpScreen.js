@@ -14,8 +14,8 @@ import {
 import AccountApi from '~/app/api/AccountApi';
 import {Routes} from '~/constants';
 import {SignUp} from '~/strings';
-import imageLogo from '../assets/logo1.png';
-import COLORS from '../colors';
+import imageLogo from '~/ui/assets/logo.png';
+import COLORS from '~/ui/colors';
 
 import {NavigationScreenProp, NavigationState} from 'react-navigation';
 
