@@ -148,7 +148,7 @@ class Chat extends Component<Props, State> {
   render() {
     let content;
     if (this.props.isLoading) {
-      content = <Spinner color='blue' />;
+      content = <Spinner color={COLORS.brandColor} />;
     }
     else {
       content = (
