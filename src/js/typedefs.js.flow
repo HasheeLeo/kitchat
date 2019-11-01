@@ -28,6 +28,7 @@ export type GCMessageObject = {
   voicePath?: string,
   attachmentPath?: string,
   documentName?: string,
+  receiverId: string // for syncing
 };
 
 export type MessageObject = {
