@@ -148,7 +148,7 @@ class SignUpScreen extends Component<Props, State> {
               primary={!this.state.isFormSubmitting}
               style={styles.signUp}
               onPress={this.state.isSignUp ? this.signUp : this.signIn}>
-              {this.state.isFormSubmitting && <Spinner color={COLORS.brandColor} />}
+              {this.state.isFormSubmitting && <Spinner color='white' />}
               {!this.state.isFormSubmitting && (
                 <Text>
                   {this.state.isSignUp ? SignUp.signUp : SignUp.signIn}
