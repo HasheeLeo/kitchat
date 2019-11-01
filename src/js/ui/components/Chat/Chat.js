@@ -72,7 +72,7 @@ class Chat extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    await request(PERMISSIONS.ANDROID.RECORD_AUDIO);
+    //await request(PERMISSIONS.ANDROID.RECORD_AUDIO);
     const options = {
       sampleRate: 16000,
       channels: 1,
@@ -171,7 +171,7 @@ class Chat extends Component<Props, State> {
               }}
             />
           )}
-          renderChatFooter={() => <Microphone onPress={this.toggleRecording} />}
+          //renderChatFooter={() => <Microphone onPress={this.toggleRecording} />}
           renderCustomView={({currentMessage}) => {
             if (currentMessage && currentMessage.documentName)
               return <Attachment currentMessage={currentMessage} />;
