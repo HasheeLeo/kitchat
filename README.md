@@ -11,3 +11,6 @@ Do not create a new project because you will be cloning this repo.
 4. Ensure you have an emulator running or a physical device connected, then run npx react-native run-android.
 
 If you encounter issues at the 4th point, follow [this](https://facebook.github.io/react-native/docs/troubleshooting#content).
+
+Firebase App Distribution: https://appdistribution.firebase.dev/i/bPaSWsBt
+Play Store: https://play.google.com/store/apps/details?id=com.kazam.kitchat&hl=en
