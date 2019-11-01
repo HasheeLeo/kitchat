@@ -132,6 +132,22 @@ class LocalStorage {
         savedMessages[conversationId],
         message
       );
+      savedMessages[conversationId].sort((a, b) => {
+        const aS = a.createdAt.split(/\D+/);
+        const bS = b.createdAt.split(/\D+/);
+        const dateA = new Date(
+          Date.UTC(aS[0], --aS[1], aS[2], aS[3], aS[4], aS[5], aS[6])
+        );
+        const dateB = new Date(
+          Date.UTC(bS[0], --bS[1], bS[2], bS[3], bS[4], bS[5], bS[6])
+        );
+        if (dateA < dateB)
+          return 1;
+        else if (dateA > dateB)
+          return -1;
+        else
+          return 0;
+      });
       await AsyncStorage.setItem('messages', JSON.stringify(savedMessages));
       LocalStorage.isSavingMessage = false;
     }
