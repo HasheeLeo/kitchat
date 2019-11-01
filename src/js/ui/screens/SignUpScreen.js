@@ -72,6 +72,10 @@ class SignUpScreen extends Component<Props, State> {
   }
 
   async signIn() {
+    if (!this.state.email || !this.state.password)
+      return;
+    
+    this.setState({isFormSubmitting: true});
     const success = await AccountApi.signIn(
       this.state.email,
       this.state.password
@@ -83,6 +87,9 @@ class SignUpScreen extends Component<Props, State> {
   }
 
   async signUp() {
+    if (!this.state.email || !this.state.password)
+      return;
+    
     this.setState({isFormSubmitting: true});
     const success = await AccountApi.signUp(
       this.state.email,
