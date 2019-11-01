@@ -46,7 +46,7 @@ class SignUpScreen extends Component<Props, State> {
       email: '',
       isFocusedEmail: false,
       isFocusedPassword: false,
-      isFormSubmitting: false,
+      isFormSubmitting: true,
       isSessionSaved: true,
       isSignUp: true,
       password: ''
@@ -67,7 +67,7 @@ class SignUpScreen extends Component<Props, State> {
       await this.signIn();
     }
     else {
-      this.setState({isSessionSaved: false});
+      this.setState({isFormSubmitting: false, isSessionSaved: false});
     }
   }
 
