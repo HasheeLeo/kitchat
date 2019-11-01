@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 
+import PersistentTask from '~/app/PersistentTask';
 import SessionFactory from '~/app/SessionFactory';
 import {Event, FileType, MESSAGE_PORT, SERVER_IP} from '~/constants';
 import {
@@ -79,7 +80,9 @@ class MessageApi {
           && message.senderId === MessageApi.conversationId)
         return;
       
-      MessageApi.subscribeCallback(callback, message);
+      new PersistentTask(async () => (
+        await MessageApi.subscribeCallback(callback, message)
+      ));
     });
 
     return () => {
@@ -97,7 +100,9 @@ class MessageApi {
           && MessageApi.conversationId !== message.senderId)
         return;
       
-      MessageApi.subscribeCallback(callback, message);
+      new PersistentTask(async () => (
+        await MessageApi.subscribeCallback(callback, message)
+      ));
     });
 
     return () => {
@@ -118,12 +123,13 @@ class MessageApi {
     }
   }
 
-  static sendAttachment(id: string, attachment: Attachment) {
+  static async sendAttachment(id: string, attachment: Attachment) {
     try {
-      axios.post(`http://${SERVER_IP}:${MESSAGE_PORT}/attachment/upload`, {
-        chatMessageAttachmentId: id,
-        chatMessageAttachedFile: attachment.file
-      });
+      await axios.post(`http://${SERVER_IP}:${MESSAGE_PORT}/attachment/upload`,
+        {
+          chatMessageAttachmentId: id,
+          chatMessageAttachedFile: attachment.file
+        });
     }
     catch (e) {
       console.log(e);
@@ -139,7 +145,9 @@ class MessageApi {
     session.sendData(JSON.stringify(message));
 
     if (attachment)
-      MessageApi.sendAttachment(message.id, attachment);
+      new PersistentTask(async () => (
+        await MessageApi.sendAttachment(message.id, attachment)
+      ));
   }
 
   static async subscribeCallback(callback: listenCallback,
